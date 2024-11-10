@@ -9,4 +9,24 @@ class Comment extends Model
 {
     /** @use HasFactory<\Database\Factories\CommentFactory> */
     use HasFactory;
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class);
+    }
+
+    public function root()
+    {
+        return $this->belongsTo(self::class);
+    }
 }

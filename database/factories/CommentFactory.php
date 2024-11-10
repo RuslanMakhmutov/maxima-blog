@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,22 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'content' => fake()->sentences(rand(1, 3), true),
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Comment $comment) {
+            // ...
+        })->afterCreating(function (Comment $comment) {
+            if (empty($comment->root_id)) {
+                $comment->root_id = $comment->id;
+                $comment->save();
+            }
+        });
     }
 }
