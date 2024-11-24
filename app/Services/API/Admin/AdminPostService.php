@@ -2,10 +2,9 @@
 
 namespace App\Services\API\Admin;
 
-use App\Http\Requests\API\StorePostRequest;
-use App\Http\Requests\API\UpdatePostRequest;
+use App\Http\Requests\Post\StorePostRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Http\Resources\Admin\Post\AdminPostResource;
-use App\Http\Resources\Admin\Post\AdminPostResourceCollection;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\JsonResponse;
