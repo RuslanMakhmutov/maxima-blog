@@ -5,6 +5,8 @@ namespace App\Services\Admin;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Http\Resources\Admin\Post\AdminPostResource;
+use App\Http\Resources\Category\CategoryResource;
+use App\Models\Category;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -14,7 +16,6 @@ use Inertia\Inertia;
 
 class AdminPostService
 {
-
     public function index(): \Inertia\Response
     {
         return Inertia::render('Admin/Post/Index', [
@@ -22,31 +23,24 @@ class AdminPostService
         ]);
     }
 
-    // public function store(StorePostRequest $request): JsonResponse
-    // {
-    //     try {
-    //         $post = Post::create([
-    //             'title' => $request->validated('title'),
-    //             'content' => $request->validated('content'),
-    //             'user_id' => Auth::id(),
-    //         ]);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => $e->getMessage(),
-    //         ], 500);
-    //     }
-    //
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Post created successfully',
-    //         'post' => [
-    //             'id' => $post->id,
-    //             'title' => $post->title,
-    //         ],
-    //     ], 201);
-    // }
-    //
+    public function add(): \Inertia\Response
+    {
+        return Inertia::render('Admin/Post/Add', [
+            'categories' => CategoryResource::collection(Category::all())
+        ]);
+    }
+
+    public function store(StorePostRequest $request)
+    {
+        $data = $request->validated();
+
+        $post = new Post($data);
+        $post->user_id = Auth::id();
+        $post->save();
+
+        return to_route('admin.posts.index');
+    }
+
     // public function update(Post $post, UpdatePostRequest $request): JsonResponse
     // {
     //     try {

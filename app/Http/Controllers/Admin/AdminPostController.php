@@ -12,22 +12,24 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminPostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(AdminPostService $postService)
     {
         return $postService->index();
     }
 
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(StorePostRequest $request, AdminPostService $postService): JsonResponse
-    // {
-    //     return $postService->store($request);
-    // }
-    //
+    public function add(AdminPostService $postService)
+    {
+        return $postService->add();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StorePostRequest $request, AdminPostService $postService)
+    {
+        return $postService->store($request);
+    }
+
     // /**
     //  * Display the specified resource.
     //  */

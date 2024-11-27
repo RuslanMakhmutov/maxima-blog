@@ -28,9 +28,40 @@ class StorePostRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'description' => [
+                'bail',
+                'nullable',
+                'string',
+                'max:100',
+            ],
             'content' => [
                 'bail',
                 'string',
+            ],
+            'image' => [
+                'bail',
+                'nullable',
+                'image',
+            ],
+            'category_id' => [
+                'bail',
+                'required',
+                'exists:categories,id',
+            ],
+            'categories' => [
+                'bail',
+                'required',
+                'array',
+            ],
+            'categories.*' => [
+                'bail',
+                'required',
+                'exists:categories,id',
+            ],
+            'published' => [
+                'bail',
+                'nullable',
+                'boolean',
             ],
         ];
     }

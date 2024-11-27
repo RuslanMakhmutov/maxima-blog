@@ -19,7 +19,8 @@ Route::get('/', HomeController::class)->name('home');
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [AdminPostController::class, 'index'])->name('index');
-        // Route::post('store', [AdminPostController::class, 'store'])->name('store');
+        Route::get('add', [AdminPostController::class, 'add'])->name('add');
+        Route::post('store', [AdminPostController::class, 'store'])->name('store');
         // Route::get('{post}/show', [AdminPostController::class, 'show'])->name('show');
         // Route::put('{post}/update', [AdminPostController::class, 'update'])->name('update');
         // Route::delete('{post}/delete', [AdminPostController::class, 'delete'])->name('delete');
