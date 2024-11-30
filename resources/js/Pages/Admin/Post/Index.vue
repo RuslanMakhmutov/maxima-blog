@@ -93,7 +93,7 @@ const props = defineProps({
                             <th class="border border-gray-300 p-2">Категории</th>
                             <th class="border border-gray-300 p-2">Создано</th>
                             <th class="border border-gray-300 p-2">Опубликовано</th>
-                            <th class="border border-gray-300 p-2"></th>
+                            <th class="border border-gray-300 p-2 w-1"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +140,7 @@ const props = defineProps({
                                 </template>
                             </td>
                             <td class="border border-gray-300 p-1">
-                                <div v-if="only_trashed" class="space-x-2">
+                                <div v-if="only_trashed" class="flex flex-nowrap space-x-2">
                                     <Link
                                         :href="route('admin.posts.restore', post.id)"
                                         method="put"
@@ -160,7 +160,7 @@ const props = defineProps({
                                         <span class="inline-block">&#x2716;</span>
                                     </Link>
                                 </div>
-                                <div v-else class="space-x-2">
+                                <div v-else class="flex flex-nowrap space-x-2">
                                     <Link
                                         :href="route('admin.posts.edit', post.id)"
                                         class="p-1 font-mono text-lg text-blue-500 hover:text-blue-300"

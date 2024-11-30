@@ -112,6 +112,7 @@ class AdminPostService
 
     public function destroy(Post $post): \Illuminate\Http\RedirectResponse
     {
+        $post->deleteImage();
         $post->forceDelete();
         return redirect()->back();
     }
