@@ -11,18 +11,22 @@ const props = defineProps({
             data: [],
         }),
     },
+    post: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 </script>
 
 <template>
-    <Head title="Создание статьи" />
+    <Head title="Редактирование статьи" />
 
     <CommonLayout>
         <template #header>
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
-                Создание статьи
+                Редактирование статьи
             </h2>
         </template>
 
@@ -31,6 +35,7 @@ const props = defineProps({
                 <section>
                     <PostForm
                         :categories="categories.data"
+                        :post="post"
                     />
                 </section>
             </div>

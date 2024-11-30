@@ -21,10 +21,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', [AdminPostController::class, 'index'])->name('index');
         Route::get('add', [AdminPostController::class, 'add'])->name('add');
         Route::post('store', [AdminPostController::class, 'store'])->name('store');
-        // Route::get('{post}/show', [AdminPostController::class, 'show'])->name('show');
-        // Route::put('{post}/update', [AdminPostController::class, 'update'])->name('update');
-        // Route::delete('{post}/delete', [AdminPostController::class, 'delete'])->name('delete');
-        // Route::delete('{post}/destroy', [AdminPostController::class, 'destroy'])->name('destroy')->withTrashed();
+        Route::get('{post}/edit', [AdminPostController::class, 'edit'])->name('edit');
+        Route::put('{post}/update', [AdminPostController::class, 'update'])->name('update');
+        Route::delete('{post}/delete', [AdminPostController::class, 'delete'])->name('delete');
+        Route::put('{post}/restore', [AdminPostController::class, 'restore'])->name('restore')->withTrashed();
+        Route::delete('{post}/destroy', [AdminPostController::class, 'destroy'])->name('destroy')->withTrashed();
     });
 });
 

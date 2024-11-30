@@ -50,7 +50,7 @@ class StorePostRequest extends FormRequest
             ],
             'categories' => [
                 'bail',
-                'required',
+                'nullable',
                 'array',
             ],
             'categories.*' => [

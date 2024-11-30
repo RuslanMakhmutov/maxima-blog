@@ -8,7 +8,6 @@ use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Post;
 use App\Services\Admin\AdminPostService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class AdminPostController extends Controller
 {
@@ -30,38 +29,28 @@ class AdminPostController extends Controller
         return $postService->store($request);
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // public function show(Post $post): JsonResponse
-    // {
-    //     return response()->json([
-    //         "success" => true,
-    //         "post" => $post,
-    //     ]);
-    // }
-    //
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Post $post, UpdatePostRequest $request, \App\Services\API\Admin\AdminPostService $postService): JsonResponse
-    // {
-    //     return $postService->update($post, $request);
-    // }
-    //
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function delete(Post $post, \App\Services\API\Admin\AdminPostService $postService): JsonResponse
-    // {
-    //     return $postService->delete($post);
-    // }
-    //
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(Post $post, AdminPostService $postService): JsonResponse
-    // {
-    //     return $postService->destroy($post);
-    // }
+    public function edit(Post $post, AdminPostService $postService)
+    {
+        return $postService->edit($post);
+    }
+
+    public function update(Post $post, UpdatePostRequest $request, AdminPostService $postService)
+    {
+        return $postService->update($post, $request);
+    }
+
+    public function delete(Post $post, AdminPostService $postService)
+    {
+        return $postService->delete($post);
+    }
+
+    public function restore(Post $post, AdminPostService $postService)
+    {
+        return $postService->restore($post);
+    }
+
+    public function destroy(Post $post, AdminPostService $postService)
+    {
+        return $postService->destroy($post);
+    }
 }
