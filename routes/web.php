@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::put('{post}/restore', [AdminPostController::class, 'restore'])->name('restore')->withTrashed();
         Route::delete('{post}/destroy', [AdminPostController::class, 'destroy'])->name('destroy')->withTrashed();
     });
+});
+
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('index');
+    // Route::get('{post}', [AdminPostController::class, 'show'])->name('show');
 });
 
 Route::get('/dashboard', function () {

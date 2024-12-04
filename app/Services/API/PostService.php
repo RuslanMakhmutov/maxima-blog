@@ -1,22 +1,39 @@
 <?php
 
-namespace App\Services\API\Admin;
+namespace App\Services\API;
 
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
-use App\Http\Resources\Admin\Post\AdminPostResource;
+use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\Post\PostsListResource;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 
-class AdminPostService
+class PostService
 {
 
-    public function index(): AnonymousResourceCollection
+    public function list(): AnonymousResourceCollection
     {
-        return AdminPostResource::collection(Post::paginate(10));
+        $posts = Post::query()
+            ->select([
+                'id',
+                'title',
+                'description',
+                'image',
+                'category_id',
+                'user_id',
+                'created_at'
+            ])
+            ->with([
+                'category:id,title',
+                'user:id,name',
+            ])
+            ->paginate(12);
+
+        return PostsListResource::collection($posts);
     }
 
     public function store(StorePostRequest $request): JsonResponse

@@ -11,7 +11,7 @@ import CommonLayout from "@/Layouts/CommonLayout.vue";
             <h2
                 class="text-xl font-semibold leading-tight text-gray-800"
             >
-                Статьи
+                Главная
             </h2>
         </template>
 
@@ -21,7 +21,7 @@ import CommonLayout from "@/Layouts/CommonLayout.vue";
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900">
-                        You're logged in!
+                        Тут пока ничего нет
                     </div>
                 </div>
             </div>

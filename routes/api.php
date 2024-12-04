@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\Admin\AdminPostController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,14 +15,8 @@ Route::name('api.')->group(function () {
         Route::post('/login', 'login')->name('login');
     });
 
-    Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::prefix('posts')->name('posts.')->group(function () {
-            Route::get('index', [AdminPostController::class, 'index'])->name('index');
-            Route::post('store', [AdminPostController::class, 'store'])->name('store');
-            Route::get('{post}/show', [AdminPostController::class, 'show'])->name('show');
-            Route::put('{post}/update', [AdminPostController::class, 'update'])->name('update');
-            Route::delete('{post}/delete', [AdminPostController::class, 'delete'])->name('delete');
-            Route::delete('{post}/destroy', [AdminPostController::class, 'destroy'])->name('destroy')->withTrashed();
-        });
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('/', [PostController::class, 'list'])->name('list');
+        Route::get('{post}', [PostController::class, 'item'])->name('item');
     });
 });

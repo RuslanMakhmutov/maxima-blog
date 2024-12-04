@@ -43,6 +43,13 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('home')"
                                     :active="route().current('home')"
                                 >
+                                    Главная
+                                </NavLink>
+
+                                <NavLink
+                                    :href="route('posts.index')"
+                                    :active="route().current('posts.index')"
+                                >
                                     Статьи
                                 </NavLink>
 
@@ -160,8 +167,16 @@ const showingNavigationDropdown = ref(false);
                             :href="route('home')"
                             :active="route().current('home')"
                         >
+                            Главная
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink
+                            :href="route('posts.index')"
+                            :active="route().current('posts.index')"
+                        >
                             Статьи
                         </ResponsiveNavLink>
+
                     </div>
 
                     <!-- Admin Navigation Menu -->
