@@ -19,7 +19,7 @@ const showingNavigationDropdown = ref(false);
             >
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div class="flex h-16 justify-between">
+                    <div class="flex h-12 justify-between">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
@@ -48,7 +48,7 @@ const showingNavigationDropdown = ref(false);
 
                                 <NavLink
                                     :href="route('posts.index')"
-                                    :active="route().current('posts.index')"
+                                    :active="route().current('posts.*')"
                                 >
                                     Статьи
                                 </NavLink>
@@ -61,7 +61,7 @@ const showingNavigationDropdown = ref(false);
                                     <template #content>
                                         <DropdownLink
                                             :href="route('admin.posts.index')"
-                                            :active="route().current('admin.posts.index')"
+                                            :active="route().current('admin.posts.*')"
                                         >
                                             Статьи
                                         </DropdownLink>
@@ -172,7 +172,7 @@ const showingNavigationDropdown = ref(false);
 
                         <ResponsiveNavLink
                             :href="route('posts.index')"
-                            :active="route().current('posts.index')"
+                            :active="route().current('posts.*')"
                         >
                             Статьи
                         </ResponsiveNavLink>
@@ -187,7 +187,7 @@ const showingNavigationDropdown = ref(false);
                             <div class="mt-3 space-y-1">
                                 <ResponsiveNavLink
                                     :href="route('admin.posts.index')"
-                                    :active="route().current('admin.posts.index')"
+                                    :active="route().current('admin.posts.*')"
                                 >
                                     Управление статьями
                                 </ResponsiveNavLink>
@@ -241,7 +241,7 @@ const showingNavigationDropdown = ref(false);
                 class="bg-white shadow"
                 v-if="$slots.header"
             >
-                <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>

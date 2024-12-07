@@ -1,16 +1,14 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import {Head} from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
-import PostsList from "@/Pages/Post/Partials/PostsList.vue";
 import CategoriesList from "@/Pages/Post/Partials/CategoriesList.vue";
+import PostCard from "@/Pages/Post/Partials/PostCard.vue";
 
 const props = defineProps({
-    posts: {
+    post: {
         type: Object,
         default: () => ({
-            data: [],
-            links: {},
-            meta: {},
+            data: {},
         }),
     },
     categories: {
@@ -23,28 +21,26 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head title="Статьи" />
+    <Head :title="post.data.title"/>
 
     <CommonLayout>
         <template #header>
-            <h2
-                class="text-lg font-semibold leading-tight text-gray-800"
-            >
-                Статьи
-            </h2>
+            <h1 class="text-lg font-semibold leading-tight text-gray-800">{{ post.data.title }}</h1>
         </template>
 
         <div class="py-2 sm:py-6">
             <CategoriesList
                 :categories="categories.data"
                 class="hidden mb-2 sm:block"
+                :active_id="post.data.category_id"
             />
-            <PostsList
-                :posts="posts"
-            />
+
+            <PostCard :post="post.data" />
+
             <CategoriesList
                 :categories="categories.data"
                 class="mt-2"
+                :active_id="post.data.category_id"
             />
         </div>
     </CommonLayout>

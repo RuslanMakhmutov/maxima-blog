@@ -9,7 +9,7 @@ import CommonLayout from "@/Layouts/CommonLayout.vue";
     <CommonLayout>
         <template #header>
             <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
+                class="text-lg font-semibold leading-tight text-gray-800"
             >
                 Главная
             </h2>
@@ -20,7 +20,7 @@ import CommonLayout from "@/Layouts/CommonLayout.vue";
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
-                    <div class="p-6 text-gray-900">
+                    <div class="p-4 sm:p-6 text-gray-900">
                         Тут пока ничего нет
                     </div>
                 </div>

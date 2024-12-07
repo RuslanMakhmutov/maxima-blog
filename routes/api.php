@@ -17,6 +17,6 @@ Route::name('api.')->group(function () {
 
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', [PostController::class, 'list'])->name('list');
-        Route::get('{post}', [PostController::class, 'item'])->name('item');
+        Route::get('{postPublished}', [PostController::class, 'item'])->name('item');
     });
 });

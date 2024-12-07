@@ -25,7 +25,7 @@ const props = defineProps({
     <CommonLayout>
         <template #header>
             <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
+                class="text-lg font-semibold leading-tight text-gray-800"
             >
                 Управление статьями
             </h2>

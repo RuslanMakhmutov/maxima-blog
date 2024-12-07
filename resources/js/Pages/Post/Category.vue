@@ -3,8 +3,11 @@ import { Head } from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
 import PostsList from "@/Pages/Post/Partials/PostsList.vue";
 import CategoriesList from "@/Pages/Post/Partials/CategoriesList.vue";
-
 const props = defineProps({
+    category: {
+        type: Object,
+        default: () => ({}),
+    },
     posts: {
         type: Object,
         default: () => ({
@@ -23,14 +26,14 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head title="Статьи" />
+    <Head :title="category.title" />
 
     <CommonLayout>
         <template #header>
             <h2
                 class="text-lg font-semibold leading-tight text-gray-800"
             >
-                Статьи
+                {{category.title}}
             </h2>
         </template>
 

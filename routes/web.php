@@ -32,7 +32,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('index');
-    // Route::get('{post}', [AdminPostController::class, 'show'])->name('show');
+    Route::get('category/{category}', [PostController::class, 'category'])->name('category');
+    Route::get('{postPublished}', [PostController::class, 'show'])->name('show');
 });
 
 Route::get('/dashboard', function () {

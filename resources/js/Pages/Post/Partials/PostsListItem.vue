@@ -16,13 +16,18 @@ const props = defineProps({
         <!--    class="size-10 rounded-full bg-gray-50"-->
         <!--/>-->
         <div class="flex items-center gap-x-4 text-xs">
-            <time :datetime="post.created_at" class="text-gray-500">{{ new Date(post.created_at).toDateString() }}</time>
-            <!--<a :href="post.category.href" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{{ post.category.title }}</a>-->
-            <span class="relative z-10 rounded-full bg-gray-50 px-3 py-1 font-medium text-gray-600 hover:bg-gray-100">{{ post.category.title }}</span>
+            <time :datetime="post.created_at" class="text-gray-500">{{ new Date(post.created_at).toLocaleDateString() }}</time>
+            <Link
+                :href="route('posts.category', post.category.id)"
+                class="relative z-10 rounded-full bg-blue-100 px-3 py-1 font-medium text-gray-600 hover:bg-blue-200 transition"
+            >{{ post.category.title }}</Link>
         </div>
         <div class="group relative">
             <h3 class="text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-                <Link :href="route('admin.posts.edit', post.id)">
+                <Link
+                    :href="route('posts.show', post.id)"
+                    :only="['post']"
+                >
                     <span class="absolute inset-0"/> {{ post.title }}
                 </Link>
             </h3>
@@ -31,10 +36,7 @@ const props = defineProps({
         <div class="relative mt-1 flex items-center gap-x-4">
             <div class="text-sm/6">
                 <p class="font-semibold text-gray-900">
-                    <!--<a :href="post.author.href">-->
-                    <span class="absolute inset-0"/>
                     {{ post.user.name }}
-                    <!--</a>-->
                 </p>
             </div>
         </div>
