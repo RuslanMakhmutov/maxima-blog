@@ -3,12 +3,19 @@ import {Head} from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
 import CategoriesList from "@/Pages/Post/Partials/CategoriesList.vue";
 import PostCard from "@/Pages/Post/Partials/PostCard.vue";
+import Comments from "@/Pages/Post/Partials/Comment/Comments.vue";
 
 const props = defineProps({
     post: {
         type: Object,
         default: () => ({
             data: {},
+        }),
+    },
+    comments: {
+        type: Object,
+        default: () => ({
+            data: [],
         }),
     },
     categories: {
@@ -36,6 +43,12 @@ const props = defineProps({
             />
 
             <PostCard :post="post.data" />
+
+            <Comments
+                :comments="comments.data"
+                :post="post.data"
+                class="mt-4"
+            />
 
             <CategoriesList
                 :categories="categories.data"

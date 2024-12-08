@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Events\CategoryVisitEvent;
-use App\Events\PostVisitEvent;
 use App\Http\Resources\Category\CategoryResource;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostResource;
 use App\Models\Category;
 use App\Models\Post;
+use App\Services\CommentService;
 use App\Services\PostService;
 use Inertia\Inertia;
 
@@ -32,13 +33,14 @@ class PostController extends Controller
         ]);
     }
 
-    public function show(Post $post)
+    public function show(Post $post, PostService $postService, CommentService $commentService)
     {
-        PostVisitEvent::dispatch($post);
+        $post = $postService->handleShowPost($post);
+        $comments = $commentService->getListForPost($post);
 
-        $post->load(['categories:id,title']);
         return Inertia::render('Post/Show', [
-            'post' => new PostResource($post),
+            'post' => PostResource::make($post),
+            'comments' => CommentResource::collection($comments),
             'categories' => CategoryResource::collection(Category::all())
         ]);
     }

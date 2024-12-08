@@ -12,6 +12,12 @@ class Comment extends Model
     use HasFactory;
     use SoftDeletes;
 
+    public const MAX_LEVEL = 5;
+
+    protected $fillable = [
+        'content',
+    ];
+
     public function post()
     {
         return $this->belongsTo(Post::class);

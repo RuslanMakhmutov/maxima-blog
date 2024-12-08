@@ -70,4 +70,9 @@ class Post extends Model
     {
         return $this->morphMany(Visit::class, 'visitable');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

@@ -21,8 +21,8 @@ class PostsListResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'image' => $this->imageUrl,
-            'user' => new UserResource($this->user),
-            'category' => new CategoryResource($this->category),
+            'user' => UserResource::make($this->user),
+            'category' => CategoryResource::make($this->category),
             'created_at' => $this->created_at
         ];
     }
