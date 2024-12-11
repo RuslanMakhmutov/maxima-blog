@@ -26,7 +26,7 @@ const form = useForm({
     _method: props.comment.id ? 'PUT' : 'POST', // https://inertiajs.com/file-uploads#multipart-limitations
 });
 
-const emit = defineEmits(['stored'])
+const emit = defineEmits(['stored', 'cancelled'])
 
 // const back = () => {
 //     window.history.back();
@@ -40,8 +40,14 @@ const handleSubmit = () => {
         url = route('posts.comments.store', props.post_id);
     }
 
-    // form.post(url, {forceFormData: true})
-    // form.post(url)
+    // form.post(url, {
+    //     only: ['comments'],
+    //     preserveScroll: true,
+    //     onSuccess: () => {
+    //         form.reset()
+    //         emit('stored')
+    //     },
+    // })
 
     form.processing = true;
 
@@ -53,16 +59,21 @@ const handleSubmit = () => {
     axios
         .post(url, data)
         .then((response) => {
-            // console.log(response);
-
             emit('stored', response.data.comment)
-
             form.reset()
         })
-        .catch(console.error)
+        .catch((err) => {
+            console.log(err.response.data.message);
+            form.errors = err.response.data.errors
+        })
         .finally(() => {
             form.processing = false;
         });
+};
+
+const handleCancel = () => {
+    form.reset()
+    emit('cancelled')
 };
 
 </script>
@@ -78,12 +89,16 @@ const handleSubmit = () => {
                 class="mt-1 block w-full"
                 placeholder="Введите комментарий..."
             />
-            <InputError class="mt-2" :message="form.errors.content"/>
+            <InputError class="mt-2" :message="form.errors.content ? form.errors.content[0] : ''"/>
         </div>
 
         <div class="flex items-center gap-4">
             <PrimaryButton :disabled="form.processing">Отправить</PrimaryButton>
-            <!--<SecondaryButton @click="back">Отменить</SecondaryButton>-->
+
+            <SecondaryButton
+                v-if="parent_id"
+                @click="handleCancel"
+            >Отменить</SecondaryButton>
         </div>
     </form>
 </template>

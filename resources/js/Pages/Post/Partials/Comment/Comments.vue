@@ -17,25 +17,44 @@ const props = defineProps({
 const reply_id = ref(null)
 
 const insertStored = (comment) => {
-    reply_id.value = null
+    cancelReply()
 
-    if (comment.parent_id) {
-        console.log('comments', props.comments)
-        // TODO неверный алгоритм поиска места для вставки. Возможно, лучше переделать список на иерархический.
-        const insertAfterKey = props.comments.findLastIndex(el => (el.id === comment.parent_id) || (el.parent_id === comment.parent_id));
+    if (comment) {
+        if (comment.parent_id) {
+            // console.log('первый вызов:', comment.parent_id)
+            const insertAfterKey = getIndexOfLastReply(comment.parent_id)
 
-        if (insertAfterKey !== -1) {
-            props.comments.splice(insertAfterKey + 1, 0, comment);
+            if (insertAfterKey !== -1) {
+                props.comments.splice(insertAfterKey + 1, 0, comment);
+            } else {
+                props.comments.push(comment);
+            }
         } else {
             props.comments.push(comment);
         }
-    } else {
-        props.comments.push(comment);
+
+        nextTick(() => {
+            document.getElementById(`comment-${comment.id}`).scrollIntoView({block: 'center', behavior: 'smooth'});
+        })
+    }
+}
+
+const cancelReply = () => {
+    reply_id.value = null
+}
+
+const getIndexOfLastReply = (id) => {
+    // ищем индекс последнего ответа на комментарий с данным id
+    const indexOfLastReply = props.comments.findLastIndex(el => el.parent_id === id)
+
+    // если не нашли ни одного ответа
+    if (indexOfLastReply === -1) {
+        // возвращаем индекс последнего комментария в рекурсии
+        return props.comments.findIndex(el => el.id === id)
     }
 
-    nextTick(() => {
-        document.getElementById(`comment-${comment.id}`).scrollIntoView({block: 'center', behavior: 'smooth'});
-    })
+    // рекурсивно ищем индекс последнего ответа
+    return getIndexOfLastReply(props.comments[indexOfLastReply].id)
 }
 </script>
 
@@ -50,13 +69,15 @@ const insertStored = (comment) => {
 
                 <div>
                     <CommentsListItem
-                        v-for="comment in comments"
+                        v-for="(comment, index) in comments"
                         :key="comment.id"
                         :comment="comment"
+                        :index="index"
                         :post_id="post.id"
                         :reply_id="reply_id"
                         @reply="(id) => reply_id = id"
                         @stored="insertStored"
+                        @cancelled="cancelReply"
                     />
                 </div>
 

@@ -15,6 +15,9 @@ const props = defineProps({
         type: Number,
         default: null,
     },
+    index: {
+        type: Number,
+    },
 })
 
 const classes = computed(() => {
@@ -38,16 +41,22 @@ const classes = computed(() => {
     return classes.join(' ')
 })
 
-const emit = defineEmits(['stored', 'reply'])
+const emit = defineEmits(['stored', 'reply', 'cancelled'])
 
 const handleStored = (comment) => {
-    console.log('handle stored', comment)
+    // console.log('handle stored', comment)
 
     emit('stored', comment)
 }
 
+const handleCancelled = (comment) => {
+    // console.log('handle stored', comment)
+
+    emit('cancelled')
+}
+
 const handleReplyClick = (id) => {
-    console.log('handle reply click', id)
+    // console.log('handle reply click', id)
 
     emit('reply', id)
 }
@@ -56,51 +65,39 @@ const handleReplyClick = (id) => {
 <template>
     <article
         :id="`comment-${comment.id}`"
-        class="p-4 sm:p-6 mb-3 last:mb-0 text-base bg-white border-t last:border-b border-gray-200 dark:border-gray-700 dark:bg-gray-900"
+        class="py-3 px-4 sm:px-6 mb-3 last:mb-0 text-base bg-white border-t last:border-b border-gray-200 dark:border-gray-700 dark:bg-gray-900"
         :class="classes"
     >
-        <footer class="flex justify-between items-center mb-2">
+        <footer class="flex space-x-4 items-center mb-2">
             <a
                 :href="`#comment-${comment.id}`"
                 class="flex items-center"
             >
-                <!--<span class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">root_id:{{ comment.root_id }}</span>-->
-                <!--<span class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">parent_id:{{ comment.parent_id || 'null' }}</span>-->
-                <!--<span class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">id:{{ comment.id }}</span>-->
-                <span class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">{{ comment.user.name }}</span>
+                <!--<span class="inline-flex items-center mr-3 text-sm text-red-600 dark:text-white font-semibold">-->
+                <!--    &lt;!&ndash;root_id:{{ comment.root_id }}&ndash;&gt;-->
+                <!--    {{index}}-->
+                <!--</span>-->
+                <!--<span class="inline-flex items-center mr-3 text-sm text-orange-600 dark:text-white font-semibold">parent_id:{{ comment.parent_id || 'null' }}</span>-->
+                <!--<span class="inline-flex items-center mr-3 text-sm text-blue-600 dark:text-white font-semibold">id:{{ comment.id }}</span>-->
+                <span
+                    class="inline-flex items-center mr-3 text-sm dark:text-white font-semibold"
+                    :class="[{
+                        'text-blue-600 font-bold': $page.props.auth.user.id === comment.user.id,
+                        'text-gray-900': $page.props.auth.user.id !== comment.user.id,
+                    }]"
+                >{{ comment.user.name }}</span>
                 <span class="text-sm text-gray-600 dark:text-gray-400">
                     <time :datetime="comment.created_at">
                         {{ new Date(comment.created_at).toLocaleDateString() }} {{ new Date(comment.created_at).toLocaleTimeString() }}
                     </time>
                 </span>
             </a>
-            <!--<button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"-->
-            <!--        class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"-->
-            <!--        type="button">-->
-            <!--    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">-->
-            <!--        <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>-->
-            <!--    </svg>-->
-            <!--    <span class="sr-only">Comment settings</span>-->
-            <!--</button>-->
-            <!--&lt;!&ndash; Dropdown menu &ndash;&gt;-->
-            <!--<div id="dropdownComment1"-->
-            <!--     class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">-->
-            <!--    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"-->
-            <!--        aria-labelledby="dropdownMenuIconHorizontalButton">-->
-            <!--        <li>-->
-            <!--            <a href="#"-->
-            <!--               class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>-->
-            <!--        </li>-->
-            <!--        <li>-->
-            <!--            <a href="#"-->
-            <!--               class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</a>-->
-            <!--        </li>-->
-            <!--        <li>-->
-            <!--            <a href="#"-->
-            <!--               class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Report</a>-->
-            <!--        </li>-->
-            <!--    </ul>-->
-            <!--</div>-->
+            <a
+                href="#"
+                class="flex items-center"
+            >
+                <span class="inline-flex items-center mr-3 text-sm text-red-600 dark:text-white font-semibold">Удалить</span>
+            </a>
         </footer>
 
         <p
@@ -114,6 +111,7 @@ const handleReplyClick = (id) => {
             :post_id="post_id"
             :parent_id="comment.id"
             @stored="handleStored"
+            @cancelled="handleCancelled"
             class="mt-6"
         />
         <div

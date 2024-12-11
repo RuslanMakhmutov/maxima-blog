@@ -23,10 +23,10 @@ class CommentService
 
         $tree = new Collection();
 
-        return $this->buildTree($list, $tree);
+        return $this->buildPlainTree($list, $tree);
     }
 
-    public function buildTree(Collection $plain_list, Collection &$tree, $parent_id = null): Collection
+    public function buildPlainTree(Collection $plain_list, Collection &$tree, $parent_id = null): Collection
     {
         $nodes = $plain_list->where('parent_id', $parent_id);
 
@@ -34,7 +34,7 @@ class CommentService
             foreach ($nodes as $node) {
                 /* @var Comment $node */
                 $tree->push($node);
-                $this->buildTree($plain_list, $tree, $node->id);
+                $this->buildPlainTree($plain_list, $tree, $node->id);
             }
         }
 
