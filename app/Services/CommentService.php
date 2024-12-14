@@ -15,6 +15,7 @@ class CommentService
     public function getListForPost(Post $post): Collection
     {
         $list = $post->comments()
+            ->withTrashed()
             ->with([
                 'user:id,name'
             ])
@@ -73,6 +74,15 @@ class CommentService
 
         return response()->json([
             'comment' => new CommentResource($comment)
+        ]);
+    }
+
+    public function delete(Comment $comment): JsonResponse
+    {
+        $comment->delete();
+
+        return response()->json([
+            'message' => 'ok',
         ]);
     }
 }

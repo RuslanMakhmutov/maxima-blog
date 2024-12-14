@@ -78,6 +78,7 @@ const getIndexOfLastReply = (id) => {
                         @reply="(id) => reply_id = id"
                         @stored="insertStored"
                         @cancelled="cancelReply"
+                        @deleted="cancelReply"
                     />
                 </div>
 

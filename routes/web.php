@@ -41,6 +41,10 @@ Route::prefix('posts')->name('posts.')->group(function () {
     });
 });
 
+Route::middleware(['auth', 'role:admin'])->prefix('comments')->name('comments.')->group(function () {
+    Route::delete('{comment}', [CommentController::class, 'delete'])->name('delete');
+});
+
 // Route::get('/dashboard', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified', 'role:admin'])->name('dashboard');

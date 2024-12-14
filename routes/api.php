@@ -20,4 +20,6 @@ Route::name('api.')->group(function () {
         Route::get('{postPublished}', [PostController::class, 'item'])->name('item');
         Route::get('{postPublished}/comments', [PostController::class, 'comments'])->name('comments');
     });
+
+    // TODO добавить недостающие маршруты при необходимости
 });
