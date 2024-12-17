@@ -56,8 +56,6 @@ class PostService
         $post->load([
             'categories:id,title',
             'user:id,name',
-            // 'comments',
-            // 'comments.user:id,name',
         ]);
 
         return $post;
@@ -69,8 +67,6 @@ class PostService
             ->with([
                 'user:id,name'
             ])
-            // ->orderBy('root_id')
-            // ->orderByRaw('parent_id NULLS FIRST') // postgres only
             ->orderBy('id')
             ->get();
 

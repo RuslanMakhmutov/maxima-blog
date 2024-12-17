@@ -24,6 +24,7 @@ class CommentResource extends JsonResource
             'parent_id' => $this->parent_id,
             'root_id' => $this->root_id,
             'level' => $this->level,
+            'post_id' => $this->post_id,
             $this->mergeWhen(!$this->deleted_at, [
                 'content' => $this->content,
                 'user' => UserResource::make($this->user),

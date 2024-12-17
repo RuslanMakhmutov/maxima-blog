@@ -6,10 +6,11 @@ use App\Models\Post;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PostVisitEvent
+class PostVisitEvent implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -20,7 +21,6 @@ class PostVisitEvent
      */
     public function __construct(public Post $post)
     {
-        //
     }
 
     /**
@@ -31,7 +31,16 @@ class PostVisitEvent
     public function broadcastOn(): array
     {
         return [
-            // new PrivateChannel('channel-name'),
+            new PrivateChannel('posts'),
+        ];
+    }
+
+    public function broadcastWith(): array
+    {
+        $this->post->loadCount(['visits']);
+        return [
+            'post_id' => $this->post->id,
+            'visits_count' => $this->post->visits()->count() + 1,
         ];
     }
 }

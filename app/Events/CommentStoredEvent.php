@@ -6,6 +6,7 @@ use App\Http\Resources\Comment\CommentResource;
 use App\Models\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -32,6 +33,7 @@ class CommentStoredEvent implements ShouldBroadcast
     {
         return [
             new Channel("post.{$this->comment->post_id}.comments"),
+            new PrivateChannel("posts"),
         ];
     }
 

@@ -1,7 +1,7 @@
 <script setup>
 import {Head, Link, usePage} from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
-import NavLink from "@/Components/NavLink.vue";
+import {onBeforeUnmount} from "vue";
 
 const props = defineProps({
     posts: {
@@ -17,6 +17,32 @@ const props = defineProps({
         default: false
     }
 });
+
+const setupListeners = () => {
+    Echo.private(`posts`)
+        .listen('PostVisitEvent', ({post_id, visits_count}) => {
+            const index = props.posts.data.findIndex(el => el.id === post_id)
+            if (index !== -1) {
+                props.posts.data[index].visits_count = visits_count
+            }
+        })
+        .listen('CommentStoredEvent', (comment) => {
+            const index = props.posts.data.findIndex(el => el.id === comment.post_id)
+            if (index !== -1) {
+                props.posts.data[index].comments_count++
+            }
+        })
+}
+
+const deleteListeners = () => {
+    Echo.leaveChannel(`posts`);
+}
+
+setupListeners()
+
+onBeforeUnmount(() => {
+    deleteListeners();
+})
 </script>
 
 <template>
@@ -92,7 +118,8 @@ const props = defineProps({
                             <th class="border border-gray-300 max-w-20"></th>
                             <th class="border border-gray-300 p-2">Категории</th>
                             <th class="border border-gray-300 p-2">Создано</th>
-                            <th class="border border-gray-300 p-2">Опубликовано</th>
+                            <th class="border border-gray-300 p-2">Опублик.</th>
+                            <th class="border border-gray-300 p-2">Стат.</th>
                             <th class="border border-gray-300 p-2 w-1"></th>
                         </tr>
                     </thead>
@@ -123,21 +150,34 @@ const props = defineProps({
                             <td class="border border-gray-300 p-2">
                                 <small>
                                     <template v-for="category in post.categories" :key="category.id">
-                                        <component :is="category.id === post.category_id ? 'strong' : 'div'">
+                                        <component
+                                            :is="category.id === post.category_id ? 'strong' : 'div'"
+                                            class="whitespace-nowrap"
+                                        >
                                             {{ category.title }} ({{category.id}})
                                         </component>
                                     </template>
                                 </small>
                             </td>
                             <td class="border border-gray-300 p-2">
-                                {{ new Date(post.created_at).toLocaleDateString() }}
+                                {{ new Date(post.created_at).toLocaleDateString() }}<br>
                                 {{ new Date(post.created_at).toLocaleTimeString() }}
                             </td>
                             <td class="border border-gray-300 p-2">
                                 <template v-if="post.published_at">
-                                    {{ new Date(post.published_at).toLocaleDateString() }}
+                                    {{ new Date(post.published_at).toLocaleDateString() }}<br>
                                     {{ new Date(post.published_at).toLocaleTimeString() }}
                                 </template>
+                            </td>
+                            <td class="border border-gray-300 px-2">
+                                <div title="Просмотров" class="cursor-default whitespace-nowrap">
+                                    <span class="font-mono text-lg text-orange-500 inline-block">&#x1F441;</span>
+                                    {{ post.visits_count }}
+                                </div>
+                                <div title="Комментариев" class="cursor-default whitespace-nowrap">
+                                    <span class="font-mono text-lg text-orange-500 inline-block">&#9998;</span>
+                                    {{ post.comments_count }}
+                                </div>
                             </td>
                             <td class="border border-gray-300 p-1">
                                 <div v-if="only_trashed" class="flex flex-nowrap space-x-2">

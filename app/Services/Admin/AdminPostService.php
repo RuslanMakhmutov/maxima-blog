@@ -8,8 +8,6 @@ use App\Http\Resources\Admin\Post\AdminPostResource;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -18,7 +16,13 @@ class AdminPostService
 {
     public function index(): \Inertia\Response
     {
-        $query = Post::with('categories')->orderByDesc('id');
+        $query = Post::with('categories')
+            ->withCount([
+                'comments' => fn ($q) => $q->withTrashed(),
+                'visits'
+            ])
+            ->orderByDesc('id');
+
         if (request()->query('only_trashed')) {
             $query->onlyTrashed();
         }
