@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Events\CommentDeletedEvent;
+use App\Events\CommentStoredEvent;
 use App\Http\Requests\Comment\StoreCommentRequest;
 use App\Http\Resources\Comment\CommentResource;
 use App\Models\Comment;
@@ -72,6 +74,8 @@ class CommentService
 
         $comment->setRelation('user', Auth::user());
 
+        CommentStoredEvent::broadcast($comment)->toOthers();
+
         return response()->json([
             'comment' => new CommentResource($comment)
         ]);
@@ -80,6 +84,8 @@ class CommentService
     public function delete(Comment $comment): JsonResponse
     {
         $comment->delete();
+
+        CommentDeletedEvent::broadcast($comment)->toOthers();
 
         return response()->json([
             'message' => 'ok',

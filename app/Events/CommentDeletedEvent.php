@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CategoryVisitEvent
+class CommentDeletedEvent implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -18,9 +18,8 @@ class CategoryVisitEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(public Category $category)
+    public function __construct(protected Comment $comment)
     {
-        //
     }
 
     /**
@@ -31,7 +30,19 @@ class CategoryVisitEvent
     public function broadcastOn(): array
     {
         return [
-            // new PrivateChannel('channel-name'),
+            new Channel("post.{$this->comment->post_id}.comments"),
+        ];
+    }
+
+    /**
+     * Данные для трансляции.
+     *
+     * @return array<string, mixed>
+     */
+    public function broadcastWith(): array
+    {
+        return [
+            'id' => $this->comment->id
         ];
     }
 }

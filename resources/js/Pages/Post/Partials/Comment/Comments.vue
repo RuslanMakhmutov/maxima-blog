@@ -1,7 +1,7 @@
 <script setup>
 import CommentForm from "@/Pages/Post/Partials/Comment/CommentForm.vue";
 import CommentsListItem from "@/Pages/Post/Partials/Comment/CommentsListItem.vue";
-import {nextTick, ref} from "vue";
+import {nextTick, onBeforeUnmount, ref} from "vue";
 
 const props = defineProps({
     comments: {
@@ -16,26 +16,60 @@ const props = defineProps({
 
 const reply_id = ref(null)
 
-const insertStored = (comment) => {
+const setupListeners = () => {
+    Echo.channel(`post.${props.post.id}.comments`)
+        // .listen('.comment.created', (e) => {
+        .listen('CommentStoredEvent', (comment) => {
+            insertStored(comment)
+        })
+        .listen('CommentDeletedEvent', ({id}) => {
+            setDeleted(id)
+        })
+}
+
+const deleteListeners = () => {
+    Echo.leaveChannel(`post.${props.post.id}.comments`);
+    // Echo.leave(`post.${props.post.id}.comments`);
+}
+
+setupListeners()
+
+onBeforeUnmount(() => {
+    deleteListeners();
+})
+
+const handleStored = (comment) => {
     cancelReply()
 
-    if (comment) {
-        if (comment.parent_id) {
-            // console.log('первый вызов:', comment.parent_id)
-            const insertAfterKey = getIndexOfLastReply(comment.parent_id)
+    insertStored(comment)
 
-            if (insertAfterKey !== -1) {
-                props.comments.splice(insertAfterKey + 1, 0, comment);
-            } else {
-                props.comments.push(comment);
-            }
+    nextTick(() => {
+        document.getElementById(`comment-${comment.id}`).scrollIntoView({block: 'center', behavior: 'smooth'});
+    })
+}
+
+const insertStored = (comment) => {
+    if (comment.parent_id) {
+        const insertAfterKey = getIndexOfLastReply(comment.parent_id)
+
+        if (insertAfterKey !== -1) {
+            props.comments.splice(insertAfterKey + 1, 0, comment);
         } else {
             props.comments.push(comment);
         }
+    } else {
+        props.comments.push(comment);
+    }
+}
 
-        nextTick(() => {
-            document.getElementById(`comment-${comment.id}`).scrollIntoView({block: 'center', behavior: 'smooth'});
-        })
+const handleDeleted = () => {
+    cancelReply()
+}
+
+const setDeleted = (id) => {
+    const index = props.comments.findIndex(el => el.id === id)
+    if (index !== -1) {
+        props.comments[index].is_deleted = true
     }
 }
 
@@ -76,18 +110,21 @@ const getIndexOfLastReply = (id) => {
                         :post_id="post.id"
                         :reply_id="reply_id"
                         @reply="(id) => reply_id = id"
-                        @stored="insertStored"
+                        @stored="handleStored"
                         @cancelled="cancelReply"
-                        @deleted="cancelReply"
+                        @deleted="handleDeleted"
                     />
                 </div>
 
-                <CommentForm
-                    v-if="!reply_id"
-                    :post_id="post.id"
-                    class="p-4 sm:p-6"
-                    @stored="insertStored"
-                />
+                <template v-if="$page.props.auth.user">
+                    <CommentForm
+                        v-if="!reply_id"
+                        :post_id="post.id"
+                        class="p-4 sm:p-6"
+                        @stored="handleStored"
+                    />
+                </template>
+                <div v-else class="p-4 sm:p-6">Авторизуйтесь для отправки комментариев</div>
             </div>
         </div>
     </section>

@@ -64,7 +64,7 @@ const handleSubmit = () => {
         })
         .catch((err) => {
             console.log(err.response.data.message);
-            form.errors = err.response.data.errors
+            form.errors = err.response.data.errors || {}
         })
         .finally(() => {
             form.processing = false;
