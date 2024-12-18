@@ -4,6 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import Select from "@/Components/Select.vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -12,6 +13,9 @@ defineProps({
     status: {
         type: String,
     },
+    cities: {
+        type: Array,
+    },
 });
 
 const user = usePage().props.auth.user;
@@ -19,6 +23,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    city_id: user.city_id,
 });
 </script>
 
@@ -67,6 +72,18 @@ const form = useForm({
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div>
+                <InputLabel for="city_id" value="Город" />
+                <Select
+                    id="city_id"
+                    class="mt-1 block w-full"
+                    v-model="form.city_id"
+                    :options="cities"
+                    show-empty-option
+                />
+                <InputError class="mt-2" :message="form.errors.city_id" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">

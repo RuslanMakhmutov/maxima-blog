@@ -12,6 +12,12 @@ defineProps({
     status: {
         type: String,
     },
+    cities: {
+        type: Object,
+        default: () => ({
+            data: [],
+        }),
+    },
 });
 </script>
 
@@ -35,6 +41,7 @@ defineProps({
                     <UpdateProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
+                        :cities="cities.data"
                         class="max-w-xl"
                     />
                 </div>

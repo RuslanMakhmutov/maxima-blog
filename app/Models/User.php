@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'city_id',
     ];
 
     /**
@@ -61,5 +62,10 @@ class User extends Authenticatable
     public function hasRole(string $role): bool
     {
         return $this->roles()->where('title', $role)->exists();
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 }

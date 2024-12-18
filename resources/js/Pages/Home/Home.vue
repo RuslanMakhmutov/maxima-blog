@@ -1,6 +1,13 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
+import Pollutions from "@/Pages/Home/Partials/Pollutions.vue";
+
+defineProps({
+    air: {
+        type: Object,
+    },
+});
 </script>
 
 <template>
@@ -17,13 +24,10 @@ import CommonLayout from "@/Layouts/CommonLayout.vue";
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
-                    <div class="p-4 sm:p-6 text-gray-900">
-                        Тут пока ничего нет
-                    </div>
-                </div>
+                <Pollutions
+                    v-if="air"
+                    :air="air"
+                />
             </div>
         </div>
     </CommonLayout>
