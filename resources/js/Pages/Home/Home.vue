@@ -3,12 +3,16 @@ import { Head } from '@inertiajs/vue3';
 import CommonLayout from "@/Layouts/CommonLayout.vue";
 import Pollutions from "@/Pages/Home/Partials/Pollutions.vue";
 import Continents from "@/Pages/Home/Partials/Continents.vue";
+import Points from "@/Pages/Home/Partials/Points.vue";
 
 defineProps({
     air: {
         type: Object,
     },
     continents: {
+        type: Array,
+    },
+    points: {
         type: Array,
     }
 });
@@ -27,7 +31,7 @@ defineProps({
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col sm:flex-row gap-4 sm:gap-6 sm:flex-wrap">
                 <Pollutions
                     v-if="air"
                     :air="air"
@@ -35,6 +39,11 @@ defineProps({
                 />
                 <Continents
                     :continents="continents"
+                    class="flex-auto"
+                />
+                <Points
+                    :points="points"
+                    class="w-full"
                 />
             </div>
         </div>

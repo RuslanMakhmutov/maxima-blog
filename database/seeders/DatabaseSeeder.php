@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             CommentSeeder::class,
             VisitSeeder::class,
+            CartesianPointSeeder::class,
         ]);
     }
 }
