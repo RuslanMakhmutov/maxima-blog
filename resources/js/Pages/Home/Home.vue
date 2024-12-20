@@ -6,7 +6,7 @@ import Continents from "@/Pages/Home/Partials/Continents.vue";
 import Points from "@/Pages/Home/Partials/Points.vue";
 
 defineProps({
-    air: {
+    pollution: {
         type: Object,
     },
     continents: {
@@ -33,8 +33,8 @@ defineProps({
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex flex-col sm:flex-row gap-4 sm:gap-6 sm:flex-wrap">
                 <Pollutions
-                    v-if="air"
-                    :air="air"
+                    v-if="pollution"
+                    :pollution="pollution"
                     class="grow"
                 />
                 <Continents

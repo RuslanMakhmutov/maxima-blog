@@ -1,6 +1,6 @@
 <script setup>
 defineProps({
-    air: {
+    pollution: {
         type: Object,
     }
 });
@@ -19,15 +19,16 @@ const aqi = {
         <section>
             <header>
                 <h2 class="text-lg font-medium text-gray-900 mb-2">
-                    Информация о качестве воздуха в Вашем городе на {{ new Date(air.dt * 1000).toLocaleString() }}<br>
+                    Информация о качестве воздуха в Вашем городе на {{ new Date(pollution.dt * 1000).toLocaleString() }}<br>
                 </h2>
             </header>
-            <p>Индекс качества воздуха: <span :class="aqi[air.main.aqi].class">{{ aqi[air.main.aqi].title }}</span></p>
-            <p>Окись азота: <span>{{ air.components.no2 }}</span></p>
-            <p>Озон: <span>{{ air.components.o3 }}</span></p>
-            <p>Диоксид серы: <span>{{ air.components.so2 }}</span></p>
-            <p>PM2.5: <span>{{ air.components.pm2_5 }}</span></p>
-            <p>PM10: <span>{{ air.components.pm10 }}</span></p>
+            <p class="text-sky-500">Координаты: широта {{ pollution.coord.lat }}, долгота {{ pollution.coord.lon }}</p>
+            <p>Индекс качества воздуха: <span :class="aqi[pollution.main.aqi].class">{{ aqi[pollution.main.aqi].title }}</span></p>
+            <p>Окись азота: <span>{{ pollution.components.no2 }}</span></p>
+            <p>Озон: <span>{{ pollution.components.o3 }}</span></p>
+            <p>Диоксид серы: <span>{{ pollution.components.so2 }}</span></p>
+            <p>PM2.5: <span>{{ pollution.components.pm2_5 }}</span></p>
+            <p>PM10: <span>{{ pollution.components.pm10 }}</span></p>
         </section>
     </div>
 </template>

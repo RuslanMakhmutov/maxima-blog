@@ -24,6 +24,7 @@ class CartesianPointService
             ->selectRaw("pos <-> point '({$x},{$y})' as distance")
             ->whereRaw("pos <-> point '({$x},{$y})' <= {$max_distance}")
             ->orderByRaw("pos <-> point '({$x},{$y})'")
+            ->limit(10)
             ->get();
     }
 }

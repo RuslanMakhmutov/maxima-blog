@@ -26,9 +26,7 @@ class OpenWeatherApiHelper
                 'lon' => $city->lon,
             ]);
 
-            $data = $response->object();
-
-            return $data->list[0];
+            return $response->object();
         });
     }
 }
